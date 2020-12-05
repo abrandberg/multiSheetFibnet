@@ -12,7 +12,7 @@ You need access to
 
 
 ## Getting started
-Clone or download the repository, open the main.m.
+A small description of the inputs and outputs is provided in the .PDF file.
 
 The basic steps to follow are:
 
@@ -24,7 +24,7 @@ The basic steps to follow are:
 
 3.  Reconcile ply coordiate systems.
 
-    USER ACTION: Input centroid-to-centroid distances between the plies.
+    USER ACTION: Input origo-to-origo distances between the plies.
 
 4. Run the script, get the new network.
 
