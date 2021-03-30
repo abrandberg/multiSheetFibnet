@@ -13,23 +13,23 @@ fprintf('%s \n','Warning: Material numbers will not be preserved. Only first ply
 % Inputs: File and directory pointers
 
 
-targetDir = {'C:\Users\augus\Documents\softwareProjects\copulamodel\delmeGeneration\outAM\Paper' ,...
-             'C:\Users\augus\Documents\softwareProjects\copulamodel\delmeGeneration\outAM\Paper' ,...
-             'C:\Users\augus\Documents\softwareProjects\copulamodel\delmeGeneration\outAM\Paper' };
+targetDir = {'C:\Users\augus\Documents\softwareProjects\multiSheetFibnet\tempGeneration' ,...
+             'C:\Users\augus\Documents\softwareProjects\multiSheetFibnet\tempGeneration' ,...
+             'C:\Users\augus\Documents\softwareProjects\multiSheetFibnet\tempGeneration' };
 % Supply the target directories as a list where
 % Each COLUMN is a ply, going from the bottom ply to the top ply
 % Each ROW    is an output, consisting of the combined plies specified on that row.
 
-networkName = {'file1_L8.0_W8.0_g60.0', ...
+networkName = {'file1_L8.0_W8.0_g200.0', ...
                'file1_L8.0_W8.0_g60.0', ...
-               'file1_L8.0_W8.0_g60.0'};
+               'file1_L8.0_W8.0_g200.0'};
 % Supply the names of each ply. This is important mainly because the grammage may 
 % not be the same in all cases.
 
 fprintf(formatSpec,'->','Number of sheets',num2str(size(targetDir,1)));
 
 
-outputDir = {'C:\Users\augus\Documents\softwareProjects\worldFacingRepositories\multiSheetFibnet\delmeOutputs'};
+outputDir = {'C:\Users\augus\Documents\softwareProjects\multiSheetFibnet\tempGeneration'};
 outputName = {'TEST'};
 
 
@@ -38,7 +38,7 @@ outputName = {'TEST'};
 
 
 offsetType = 'relative';
-offsetMatrix = [200 200]*1e-6;
+offsetMatrix = [150 150]*1e-6;
 
 if strcmp(offsetType,'relative')
     offsetMatrix = cumsum(offsetMatrix);
