@@ -29,7 +29,7 @@ networkName = {'file1_L8.0_W8.0_g60.0', ...
 fprintf(formatSpec,'->','Number of sheets',num2str(size(targetDir,1)));
 
 
-outputLoc = {'C:\Users\augus\Documents\softwareProjects\worldFacingRepositories\multiSheetFibnet\delmeOutputs2'};
+outputDir = {'delmeOutputs2'};
 outputName = {'TEST'};
 
 
@@ -74,11 +74,8 @@ assert(sum(size(networkName) == (size(offsetMatrix)+[0 1])) == length(size(netwo
 
 
 
-% Visualize inputs.
-% There will be a function here
 
 
-% Maybe wrap everything below in a nice function to seperate inputs and outputs?
 % Initialize
 fprintf(formatSpec,'->','','Initialization');
 nodalData = cell(size(targetDir));
@@ -88,7 +85,6 @@ elementData = cell(size(targetDir));
 
 
 % Construct
-
 for aLoop = 1:size(targetDir,1)         % For each sheet to be generated
 
     fprintf(formatSpecInform,'',['Forming sheet : ' num2str(aLoop) ' Number of plies : ' num2str(size(targetDir,2))]);
