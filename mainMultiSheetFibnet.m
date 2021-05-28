@@ -13,9 +13,9 @@ fprintf('%s \n','Warning: Material numbers will not be preserved. Only first ply
 % Inputs: File and directory pointers
 
 
-targetDir = {'C:\Users\augus\Documents\softwareProjects\copulamodel\delmeGeneration\outAM\Paper' ,...
-             'C:\Users\augus\Documents\softwareProjects\copulamodel\delmeGeneration\outAM\Paper' ,...
-             'C:\Users\augus\Documents\softwareProjects\copulamodel\delmeGeneration\outAM\Paper' };
+targetDir = {'C:\Users\augus\Documents\softwareProjects\copulamodel\delmeGeneration\outOG' ,...
+             'C:\Users\augus\Documents\softwareProjects\copulamodel\delmeGeneration\outOG' ,...
+             'C:\Users\augus\Documents\softwareProjects\copulamodel\delmeGeneration\outOG' };
 % Supply the target directories as a list where
 % Each COLUMN is a ply, going from the bottom ply to the top ply
 % Each ROW    is an output, consisting of the combined plies specified on that row.
@@ -29,7 +29,7 @@ networkName = {'file1_L8.0_W8.0_g60.0', ...
 fprintf(formatSpec,'->','Number of sheets',num2str(size(targetDir,1)));
 
 
-outputLoc = {'C:\Users\augus\Documents\softwareProjects\worldFacingRepositories\multiSheetFibnet\delmeOutputs'};
+outputLoc = {'C:\Users\augus\Documents\softwareProjects\worldFacingRepositories\multiSheetFibnet\delmeOutputs2'};
 outputName = {'TEST'};
 
 
@@ -95,13 +95,15 @@ for aLoop = 1:size(targetDir,1)         % For each sheet to be generated
     
     for bLoop = 1:size(targetDir,2)     % For each ply in the sheet on row aLoop of targetDir   
         [nodalData{aLoop,bLoop},realData{aLoop,bLoop},elementData{aLoop,bLoop},materialData] = importNetworks(targetDir{aLoop,bLoop},networkName{aLoop,bLoop});
+        
+        elementData{aLoop,bLoop}(:,6) = bLoop;  % Assign a material to each ply
     end
     
     for cLoop = 2:size(targetDir,2)     % Now that we have the data in memory, we can merge.
         nodeMax = max(nodalData{aLoop,cLoop-1}(:,1));
         elementMax = max(elementData{aLoop,cLoop-1}(:,1));
         realMax = max(realData{aLoop,cLoop-1}(:,1));
-               
+                       
         % Update nodal arrays
         nodalData{aLoop,cLoop}(:,4) = nodalData{aLoop,cLoop}(:,4) + offsetMatrix(aLoop,cLoop-1);    % Offsets height
         nodalData{aLoop,cLoop}(:,1) = nodalData{aLoop,cLoop}(:,1) + nodeMax;

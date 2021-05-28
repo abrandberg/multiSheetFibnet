@@ -16,7 +16,7 @@ fileID = fopen(typeInputFile,'w');
 fprintf(fileID,'%12.0i %1.0i %17.10E %17.10E %17.10E\n',dataType'); 
 fclose(fileID);
 
-typeInputFile = horzcat(fileName,'.mat');
-fileID = fopen(typeInputFile,'w');
+matInputFile = horzcat(fileName,'.mat');
+fileID = fopen(matInputFile,'w');
 fprintf(fileID,'%12.0i %17.11E %17.11E\n',dataMaterials'); 
 fclose(fileID);
