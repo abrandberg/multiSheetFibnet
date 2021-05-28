@@ -51,7 +51,7 @@ fprintf(formatSpec,'->','Offset option',offsetType);
 % the next one. Dimensions should be one less column than targetDir, same number of rows.
 
 % Visualization options
-histogramOptions = {'normalization','count','edgeColor',[1 1 1]};
+histogramOptions = {'normalization','probability','edgeColor',[1 1 1]};
 
 
 if sum(strcmp(histogramOptions,'probability')) > 0
@@ -137,12 +137,12 @@ for aLoop = 1:size(targetDir,1)         % For each sheet to be generated
     assert(min(unique(nodalDataOut(:,1)) == unique(elementDataOut(:,2:4)))> 0,'Element array references non-existing node or unused node in node array')
 
     % If assertions are true, write to file
-    if ~(exist(outputLoc{aLoop},'dir') == 7)
+    if ~(exist(outputDir{aLoop},'dir') == 7)
         fprintf(formatSpecInform,'','Output dir missing. Creating.');
-        mkdir(outputLoc{aLoop})
+        mkdir(outputDir{aLoop})
     end
     fprintf(formatSpec,'->','','Writing output');
-    writeFibnetInput([outputLoc{aLoop} filesep outputName{aLoop}],nodalDataOut,elementDataOut,realDataOut,materialData);
+    writeFibnetInput([outputDir{aLoop} filesep outputName{aLoop}],nodalDataOut,elementDataOut,realDataOut,materialData);
     fprintf(formatSpec,'->','','Output complete');
 end
 fprintf(formatSpec,'->','End of','Forming');
@@ -152,12 +152,14 @@ fprintf(formatSpec,'->','','Visualization');
 for eLoop = 1:size(targetDir,1)
     xau = linspace(min(nodalDataOut(:,4)),max(nodalDataOut(:,4)),100);
     figure;
-    histogram(nodalDataOut(:,4),xau,histogramOptions{:},'DisplayName',['Sheet ' num2str(eLoop)])
+    
     hold on
     for fLoop = 1:size(targetDir,2)
         histogram(nodalData{1,fLoop}(:,4),xau,histogramOptions{:},'DisplayName',['Ply ' num2str(fLoop)])
+        hold on
     end
-    xlabel('$z$ rel. mid of bottom ply [m]','interpreter','latex')
+    histogram(nodalDataOut(:,4),xau,histogramOptions{:},'DisplayName',['Sheet ' num2str(eLoop)])
+    xlabel('New $z$ [m]','interpreter','latex')
     ylabel(yLab,'interpreter','latex')
     legend('location','best','interpreter','latex')
     set(gca,'TickLabelInterpreter','latex')
