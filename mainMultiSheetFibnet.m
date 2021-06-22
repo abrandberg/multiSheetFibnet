@@ -40,7 +40,7 @@ outputName = {'TEST'};
 
 
 offsetType = 'relative';
-offsetMatrix = [45 54]*1e-6;
+offsetMatrix = [300 300]*1e-6;
 
 
 if strcmp(offsetType,'relative')
@@ -48,6 +48,11 @@ if strcmp(offsetType,'relative')
 elseif strcmp(offsetMatrix,'absolute')
     offsetMatrix = offsetMatrix;
 end
+
+orientationFlag = [1 1 -1];
+%  1 - Keep as is
+% -1 - Flip (mirror) coordinates
+
 
 fprintf(formatSpec,'->','Offset option',offsetType);
 % A matrix consisting of offset values from the centroid of each ply to the centroid of
@@ -104,8 +109,14 @@ for aLoop = 1:size(targetDir,1)         % For each sheet to be generated
         realMax = max(realData{aLoop,cLoop-1}(:,1));
                        
         % Update nodal arrays
-        nodalData{aLoop,cLoop}(:,4) = nodalData{aLoop,cLoop}(:,4) + offsetMatrix(aLoop,cLoop-1);    % Offsets height
-        nodalData{aLoop,cLoop}(:,1) = nodalData{aLoop,cLoop}(:,1) + nodeMax;
+        if orientationFlag(cLoop) == 1
+            nodalData{aLoop,cLoop}(:,4) = nodalData{aLoop,cLoop}(:,4) + offsetMatrix(aLoop,cLoop-1);    % Offsets height
+            nodalData{aLoop,cLoop}(:,1) = nodalData{aLoop,cLoop}(:,1) + nodeMax;
+        elseif orientationFlag(cLoop) == -1
+            
+            nodalData{aLoop,cLoop}(:,4) = nodalData{aLoop,cLoop}(:,4).*-1 + offsetMatrix(aLoop,cLoop-1);    % Offsets height
+            nodalData{aLoop,cLoop}(:,1) = nodalData{aLoop,cLoop}(:,1) + nodeMax;
+        end
         
         % Update real arrays
         realData{aLoop,cLoop}(:,1) = realData{aLoop,cLoop}(:,1) + realMax;
