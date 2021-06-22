@@ -16,6 +16,7 @@ fprintf('%s \n','Warning: Material numbers will not be preserved. Only first ply
 targetDir = {'C:\Users\augus\Documents\softwareProjects\multiSheetFibnet\tempGeneration' ,...
              'C:\Users\augus\Documents\softwareProjects\multiSheetFibnet\tempGeneration' ,...
              'C:\Users\augus\Documents\softwareProjects\multiSheetFibnet\tempGeneration' };
+
 % Supply the target directories as a list where
 % Each COLUMN is a ply, going from the bottom ply to the top ply
 % Each ROW    is an output, consisting of the combined plies specified on that row.
@@ -29,6 +30,7 @@ networkName = {'file1_L8.0_W8.0_g200.0', ...
 fprintf(formatSpec,'->','Number of sheets',num2str(size(targetDir,1)));
 
 
+
 outputDir = {'C:\Users\augus\Documents\softwareProjects\multiSheetFibnet\tempGeneration'};
 outputName = {'TEST'};
 
@@ -38,7 +40,8 @@ outputName = {'TEST'};
 
 
 offsetType = 'relative';
-offsetMatrix = [150 150]*1e-6;
+offsetMatrix = [45 54]*1e-6;
+
 
 if strcmp(offsetType,'relative')
     offsetMatrix = cumsum(offsetMatrix);
@@ -74,11 +77,8 @@ assert(sum(size(networkName) == (size(offsetMatrix)+[0 1])) == length(size(netwo
 
 
 
-% Visualize inputs.
-% There will be a function here
 
 
-% Maybe wrap everything below in a nice function to seperate inputs and outputs?
 % Initialize
 fprintf(formatSpec,'->','','Initialization');
 nodalData = cell(size(targetDir));
@@ -88,20 +88,21 @@ elementData = cell(size(targetDir));
 
 
 % Construct
-
 for aLoop = 1:size(targetDir,1)         % For each sheet to be generated
 
     fprintf(formatSpecInform,'',['Forming sheet : ' num2str(aLoop) ' Number of plies : ' num2str(size(targetDir,2))]);
     
     for bLoop = 1:size(targetDir,2)     % For each ply in the sheet on row aLoop of targetDir   
         [nodalData{aLoop,bLoop},realData{aLoop,bLoop},elementData{aLoop,bLoop},materialData] = importNetworks(targetDir{aLoop,bLoop},networkName{aLoop,bLoop});
+        
+        elementData{aLoop,bLoop}(:,6) = bLoop;  % Assign a material to each ply
     end
     
     for cLoop = 2:size(targetDir,2)     % Now that we have the data in memory, we can merge.
         nodeMax = max(nodalData{aLoop,cLoop-1}(:,1));
         elementMax = max(elementData{aLoop,cLoop-1}(:,1));
         realMax = max(realData{aLoop,cLoop-1}(:,1));
-               
+                       
         % Update nodal arrays
         nodalData{aLoop,cLoop}(:,4) = nodalData{aLoop,cLoop}(:,4) + offsetMatrix(aLoop,cLoop-1);    % Offsets height
         nodalData{aLoop,cLoop}(:,1) = nodalData{aLoop,cLoop}(:,1) + nodeMax;
